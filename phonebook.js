@@ -30,6 +30,9 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 
+const path = require("path");
+app.use(express.static(path.join(__dirname, "client", "build")));
+
 // app.use(morgan("tiny"));
 app.use(morgan(function (tokens, request, response) {
     return [
