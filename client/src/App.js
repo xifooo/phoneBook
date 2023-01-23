@@ -114,22 +114,22 @@ const App = () => {
     const rmName = persons.find(n => n.id === id).name;
     if (window.confirm(`Delete ${rmName} ?`)) {
       services
-      .remove(id)
-      .then(response => {
-        // console.log(`已删除 ${id}`);
-        // alert(`${rmName} is already removed`);
-        
-        services
-        .getAll()
+        .remove(id)
         .then(response => {
-          setPersons(response.data);
-        });
+          // console.log(`已删除 ${id}`);
+          // alert(`${rmName} is already removed`);
+          
+          services
+            .getAll()
+            .then(response => {
+              setPersons(response.data);
+            });
 
-        setMessage(`'${rmName}' is already removed`);
-        setTimeout(()=>{
-          setMessage("")
-        },5000 );
-      })
+          setMessage(`'${rmName}' is already removed`);
+          setTimeout(()=>{
+            setMessage("")
+          },5000 );
+        })
     };
   };
 
