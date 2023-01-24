@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 
 const url = process.env.MONGODB_URI
 
+console.log('connecting to', url)
+
 mongoose.connect(url)
     .then(result => {
         console.log('connected to MongoDB')
@@ -11,7 +13,6 @@ mongoose.connect(url)
     });
 
 const personSchema = new mongoose.Schema({
-    id: Number,
     name: String,
     number: String
 });

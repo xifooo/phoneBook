@@ -4,7 +4,6 @@ const url = `mongodb+srv://jyeho:${password}@cluster0.30kp0cf.mongodb.net/phoneB
 mongoose.connect(url);
 
 const personSchema = new mongoose.Schema({
-    id: Number,
     name: String,
     number: String
 });

@@ -3,28 +3,28 @@ import services from "./components/persons"
 
 const Message = ({ message }) => {
   if (message === null) {
-      return null
-    }
-    return (
-      <div className='error'>
-        {message}
-      </div>
-    )
+    return null
+  }
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
 };
 
 const PersonForm = ( props ) => (
   <form onSubmit={props.AddPerson}>
     <div>
-        name: <input value={props.newName} onChange={props.handleNameChange}/>
+      name: <input value={props.newName} onChange={props.handleNameChange}/>
     </div>
     <div>
-        number: <input value={props.newNumber} onChange={props.handleNumberChange} />
+      number: <input value={props.newNumber} onChange={props.handleNumberChange} />
     </div>
     <div>
-        <button type="submit"> add </button>
+      <button type="submit"> add </button>
     </div>
   </form>
-  );
+);
 
 const PersonList = (props) => {
   return (
@@ -71,25 +71,42 @@ const App = () => {
 
   const AddPerson = (event) => {
     event.preventDefault();
+    const newObj = {
+      name: newName,
+      number: newNumber
+    };
+    
     if (persons.map(item => item.name).includes(newName)) {
-      // alert(`${newName} is already added to phonebook`);
-      setMessage(`'${newName}' is already added to phonebook`)
-    } else {
-      const newObj = {
-        name : newName,
-        number : newNumber
-      };
+      setMessage(`'${newName}' is already added to phonebook, but it has been updated now !`)
+      const existedId = persons.find(p => p.name == newName ).id
       services
-      .create(newObj)
-      .then(response => {
-        setPersons(persons.concat(response.data));
-        setNewName('');
-        setnewNumber('');
+        .update(existedId, newObj)
+        .then(response => {
+          setPersons(
+            persons
+              .filter(x => x.name !== newName)
+              .concat(response.data)
+          );
 
-        setMessage(`Added '${newObj.name}'`);
-        setTimeout(()=>{
-          setMessage(null)
-        }, 5000 );
+          setNewName('');
+          setnewNumber('');
+
+          setTimeout(()=>{
+            setMessage(null);
+          }, 5000 );
+        });
+    } else {
+      services
+        .create(newObj)
+        .then(response => {
+          setPersons(persons.concat(response.data));
+          setNewName('');
+          setnewNumber('');
+
+          setMessage(`Added '${newObj.name}'`);
+          setTimeout(()=>{
+            setMessage(null);
+          }, 5000 );
       });
     };
   };
