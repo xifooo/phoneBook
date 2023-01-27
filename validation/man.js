@@ -4,7 +4,7 @@ const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 
-mongoose.connect(url, { useNewUrlParser: true })
+mongoose.connect(url)
   .then(result => {
     console.log('connected to MongoDB')
   })
@@ -12,7 +12,7 @@ mongoose.connect(url, { useNewUrlParser: true })
     console.log('error connecting to MongoDB', error.message)
   });
 
-const personSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   name: {
     type: String,
     minLength: 3,
@@ -31,13 +31,13 @@ const personSchema = new mongoose.Schema({
   }
 });
 
-personSchema.set("toJSON", {
+schema.set("toJSON", {
   transform: (document, returnedObj) => {
-    returnedObj.id = returnedObj._id.toString();
-    delete returnedObj._id;
-    delete returnedObj.__v;
+    returnedObj.id = returnedObj._id.toString()
+    delete returnedObj._id
+    delete returnedObj.__v
   }
 });
 
-module.exports = mongoose.model("person", personSchema);
+module.exports = mongoose.model("man", schema);
 

@@ -1,0 +1,66 @@
+GET http://localhost:3001/api/persons HTTP/1.1
+
+###
+GET http://localhost:3001/api/persons/63d335a05f35bd099c536d9e HTTP/1.1
+
+###
+GET http://localhost:3001/api/persons/63d335a05f35bd099c536d9e HTTP/1.1
+
+###
+GET http://localhost:3001/info HTTP/1.1
+
+
+###
+PUT http://localhost:3001/api/persons/63d3f1db61b6e4752c1a9b53 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Epax",
+    "number": "010--1122334455"
+}
+
+###
+PUT http://localhost:3001/api/persons/63d3c77fc23fd057ffeed3bd HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Mary Poppendieck",
+    "number": "010-111190191"
+}
+
+###
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "张三",
+    "number": "100-908900008"
+}
+
+###
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "W",
+    "number": "102-908908908"
+}
+
+###
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Invalid number",
+    "number": "10-22-334455"
+}
+
+
+###
+DELETE http://localhost:3001/api/persons/63d3370eb6ea8947ad9b4a3b HTTP/1.1
+
+###
+DELETE http://localhost:3001/api/persons/63d33861caa5d87ed88ecf68 HTTP/1.1
+
+###
+GET http://localhost:3001/api/persons HTTP/1.1
