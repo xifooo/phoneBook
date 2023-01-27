@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import services from "./components/persons"
 
 const Message = ({ message }) => {
-  if (message === null) {
+  if ( message === null ) {
     return null
   }
   return (
@@ -26,23 +26,24 @@ const PersonForm = ( props ) => (
   </form>
 );
 
-const PersonList = (props) => {
-  return (
+const PersonList = ({ persons, removePerson }) => (
     <ol>
-      {props.persons.map(item => 
+      {
+      persons
+      .map(item => 
         <li key={item.id}>
           {item.name} {item.number}    
-          <button onClick={props.removePerson(item.id)}> delete </button>
-        </li>)}
+        <button onClick={removePerson(item.id)}> delete </button>
+        </li>)
+        }
     </ol>
-  )
-};
+);
 
-const Filter = (props) => {
-  const filteredResult = props.persons.filter(item => item.name.toUpperCase().indexOf(props.searchText.toUpperCase()) !== -1);
+const Filter = ({ persons, searchText, handlesearchText }) => {
+  const filteredResult = persons.filter(item => item.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
   return (
     <div>
-      filter shown with <input value={props.searchText} onChange={props.handlesearchText} />
+      filter shown with <input value={searchText} onChange={handlesearchText} />
       <br />
       {filteredResult.map(item => <p key={item.id}> {item.name} {item.number}</p>)}
     </div>
@@ -54,7 +55,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setnewNumber] = useState("");
   const [searchText, setsearchText] = useState("");
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("");
 
   // get all persons
   useEffect(() => {
@@ -78,23 +79,19 @@ const App = () => {
     
     if (persons.map(item => item.name).includes(newName)) {
       setMessage(`'${newName}' is already added to phonebook, but it has been updated now !`)
-      const existedId = persons.find(p => p.name == newName ).id
+      const existedId = persons.find(p => p.name == newName ).id;
       services
         .update(existedId, newObj)
         .then(response => {
-          setPersons(
-            persons
-              .filter(x => x.name !== newName)
-              .concat(response.data)
-          );
-
+          setPersons(persons.map(item => item.name !== newName ? item : response.data));
           setNewName('');
           setnewNumber('');
 
-          setTimeout(()=>{
+          setTimeout(() => {
             setMessage(null);
-          }, 5000 );
-        });
+          }, 5000 )
+        })
+        .catch((e) => setMessage(e.response.data.error) );
     } else {
       services
         .create(newObj)
@@ -104,16 +101,18 @@ const App = () => {
           setnewNumber('');
 
           setMessage(`Added '${newObj.name}'`);
-          setTimeout(()=>{
+          setTimeout(() => {
             setMessage(null);
-          }, 5000 );
-      });
+          }, 5000 )
+        })
+        .catch((e) => setMessage(e.response.data.error) );
     };
   };
 
   const handleNameChange = (event) => {
     try{
       setNewName(event.target.value);
+      console.log(event.target.value)
     }catch (e) {
       console.log("Something went wrong: ", e);
     }
